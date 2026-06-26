@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Perfis e Permissões · {{ app_name }}{% endblock %}
+{% block content %}
+{% set draft_count = processes|selectattr('status', 'equalto', 'draft')|list|length %}
+{% set pending_count = processes|selectattr('status', 'equalto', 'pending_approval')|list|length %}
+
+<section class="page-heading">
+  <div>
+    <h1>Perfis e Permissões</h1>
+    <p>Gerencie processos, perfis, permissões e acompanhe o fluxo de aprovações.</p>
+  </div>
+  <div class="heading-actions">
+    <div class="action-with-helper">
+      <button id="newProcessButton" class="button button--primary" type="button"><svg><use href="#i-plus"/></svg>Novo processo</button>
+      <small>Crie um processo e configure sua matriz de acesso.</small>
+    </div>
+    <button class="button button--icon" type="button" aria-label="Mais opções"><svg><use href="#i-more"/></svg></button>
+  </div>
+</section>
+
+<section class="metric-strip" aria-label="Indicadores gerais">
+  <article class="metric-card metric-card--yellow">
+    <span>PROCESSOS ATIVOS</span><strong>{{ processes|length }}</strong><small><b>●</b> Total cadastrado no sistema</small>
+  </article>
+  <article class="metric-card">
+    <span>RASCUNHOS</span><strong>{{ draft_count }}</strong><small>— Em edição pelos responsáveis</small>
+  </article>
+  <article class="metric-card metric-card--amber">
+    <span>PENDENTES DE APROVAÇÃO</span><strong>{{ pending_count }}</strong><small><b>▲</b> Aguardando análise</small>
+  </article>
+  <article class="metric-card metric-card--blue">
+    <span>SINCRONIZADOS (BIZAGI)</span><strong>{{ synced_count }}</strong><small><b>▲</b> Casos enviados com sucesso</small>
+  </article>
+  <article class="metric-card">
+    <span>PERFIS CADASTRADOS</span><strong>{{ profile_count }}</strong><small>▲ Somatório das matrizes</small>
+  </article>
+</section>
+
+<div class="dashboard-grid">
+  <section class="panel process-panel" id="processes">
+    <header class="panel-header process-panel-header">
+      <div>
+        <h2>Processos <span id="visibleProcessCount">{{ processes|length }}</span></h2>
+        <p>Lista de todos os processos cadastrados no sistema.</p>
+      </div>
+      <div class="table-controls">
+        <label class="control-with-helper search-control">
+          <span class="control-input"><svg><use href="#i-search"/></svg><input id="processSearch" type="search" autocomplete="off" placeholder="Buscar processo"></span>
+          <small>Pesquise por código, nome ou responsável.</small>
+        </label>
+        <label class="control-with-helper">
+          <span class="control-input control-input--select"><svg><use href="#i-filter"/></svg><select id="statusFilter"><option value="all">Todos os status</option><option value="draft">Rascunho</option><option value="pending_approval">Pendente de aprovação</option><option value="approved">Aprovado</option><option value="synced">Sincronizado</option></select></span>
+          <small>Filtre pelo status do fluxo.</small>
+        </label>
+        <button class="button button--icon table-menu" type="button" aria-label="Mais opções"><svg><use href="#i-more"/></svg></button>
+      </div>
+    </header>
+
+    <div class="table-scroll">
+      <table class="process-table">
+        <thead>
+          <tr>
+            <th>Código <span>↕</span></th>
+            <th>Processo <span>↕</span></th>
+            <th>Responsável</th>
+            <th>Status</th>
+            <th>Última atualização <span>↕</span></th>
+            <th class="actions-heading">Ações<small>Acesse detalhes ou mais opções.</small></th>
+          </tr>
+        </thead>
+        <tbody id="processRegistryBody">
+          {% for process in processes %}
+          <tr class="process-registry-row" data-status="{{ process.status }}" data-search="{{ (process.code ~ ' ' ~ process.name ~ ' ' ~ (process.responsible or ''))|lower }}">
+            <td><code>{{ process.code }}</code></td>
+            <td><a href="/processes/{{ process.id }}" class="process-name-link">{{ process.name }}</a><small class="mobile-detail">{{ process.description or 'Sem descrição informada.' }}</small></td>
+            <td><span class="person-cell"><b class="mini-avatar">{{ (process.responsible or 'NI')[:2]|upper }}</b>{{ process.responsible or 'Não informado' }}</span></td>
+            <td>
+              <span class="status-label status-label--{{ process.status }}"><i></i>
+                {% if process.status == 'draft' %}Rascunho{% elif process.status == 'pending_approval' %}Pendente de aprovação{% elif process.status == 'approved' %}Aprovado{% elif process.status == 'synced' %}Concluído{% else %}{{ process.status }}{% endif %}
+              </span>
+            </td>
+            <td><time>{{ process.updated_at.strftime('%d/%m/%Y %H:%M') }}</time><small>versão {{ process.version }}</small></td>
+            <td><div class="row-buttons"><a class="table-icon-button" href="/processes/{{ process.id }}" title="Visualizar processo"><svg><use href="#i-eye"/></svg></a><button class="table-icon-button" type="button" title="Mais opções"><svg><use href="#i-more"/></svg></button></div></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div id="processNoResults" class="empty-state" hidden><strong>Nenhum processo encontrado.</strong><span>Revise o texto pesquisado ou o status selecionado.</span></div>
+    <footer class="table-footer"><span>Mostrando os registros disponíveis</span><div class="pagination"><button disabled>‹</button><button class="is-current">1</button><button disabled>›</button></div></footer>
+  </section>
+
+  <aside class="dashboard-rail">
+    <section class="panel rail-card">
+      <header><div><h3>Atividades recentes</h3><p>Acompanhe as últimas ações realizadas.</p></div><a href="/audit-logs">Ver todas</a></header>
+      <div class="activity-list">
+        {% for item in recent_activities %}
+        <article class="activity-item">
+          <span class="mini-avatar mini-avatar--soft">{{ (item.actor or 'SI')[:2]|upper }}</span>
+          <i class="activity-dot activity-dot--{{ item.action }}"></i>
+          <div><strong>{{ item.actor }}</strong> {{ item.label|lower }}<b>{{ item.process_name }}</b><time>{{ item.created_at.strftime('%d/%m/%Y %H:%M') }}</time></div>
+        </article>
+        {% else %}
+        <div class="rail-empty">As atividades aparecerão aqui após as primeiras alterações.</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="panel rail-card approval-card">
+      <header><div><h3>Fila de aprovações <span>{{ pending_count }}</span></h3><p>Processos que aguardam sua avaliação.</p></div><a href="/approval-flows">Ver fila</a></header>
+      <div class="approval-list">
+        {% for process in pending_processes %}
+        <a href="/processes/{{ process.id }}"><strong>{{ process.name }}</strong><span>{{ process.code }} · {{ process.responsible or 'Não informado' }}</span></a>
+        {% else %}
+        <div class="rail-empty">Não há processos pendentes neste momento.</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="panel rail-card integration-card">
+      <header><div><h3>Saúde da integração</h3><p>Estado dos conectores Bizagi e n8n.</p></div><a href="/integrations">Ver detalhes</a></header>
+      <dl>
+        <div><dt>Bizagi</dt><dd class="integration-ok">{{ 'Integrado' if bizagi_enabled else 'Modo seguro' }}</dd></div>
+        <div><dt>Processos sincronizados</dt><dd>{{ synced_count }} / {{ processes|length }}</dd></div>
+        <div><dt>Falhas registradas</dt><dd>{{ failed_sync_count }}</dd></div>
+        <div><dt>Configuração Bizagi</dt><dd>{{ 'Ativa' if bizagi_enabled else 'Pendente' }}</dd></div><div><dt>Automação n8n</dt><dd>{{ 'Ativa' if n8n_enabled else 'Pendente' }}</dd></div>
+      </dl>
+    </section>
+  </aside>
+</div>
+
+<dialog id="newProcessDialog" class="modal">
+  <form id="newProcessForm" method="dialog">
+    <header class="modal-header"><div><span>NOVO PROCESSO</span><h2>Identificação inicial</h2><p>Os dados poderão ser alterados enquanto o processo estiver em rascunho.</p></div><button id="closeProcessDialog" type="button" aria-label="Fechar"><svg><use href="#i-close"/></svg></button></header>
+    <section class="modal-body form-grid">
+      <label class="form-field"><span>Código do processo *</span><input id="newProcessCode" maxlength="80" required placeholder="Ex.: 2327"><small>Identificador único utilizado nas buscas e integrações.</small></label>
+      <label class="form-field form-field--wide"><span>Nome do processo *</span><input id="newProcessName" maxlength="250" required placeholder="Nome do processo ou projeto"><small>Título exibido na listagem e no fluxo de aprovação.</small></label>
+      <label class="form-field"><span>Responsável</span><input id="newProcessResponsible" maxlength="160" placeholder="Pessoa ou área responsável"><small>Responsável por manter a matriz e encaminhar aprovações.</small></label>
+      <label class="form-field"><span>Área</span><input id="newProcessArea" maxlength="160" placeholder="Ex.: Tecnologia da Informação"><small>Unidade de negócio à qual o processo pertence.</small></label>
+      <label class="form-field form-field--wide"><span>Documento de referência</span><input id="newProcessSource" maxlength="255" placeholder="Opcional: nome, número ou link"><small>Material opcional que orienta a definição do processo.</small></label>
+      <label class="form-field form-field--full"><span>Descrição</span><textarea id="newProcessDescription" rows="4" maxlength="5000" placeholder="Descreva o objetivo e o escopo do processo"></textarea><small>Resumo utilizado para contextualizar revisores e aprovadores.</small></label>
+      <div id="newProcessError" class="inline-error form-field--full" hidden></div>
+    </section>
+    <footer class="modal-footer"><button id="cancelProcessButton" class="button" type="button">Cancelar</button><button class="button button--primary" type="submit">Criar processo <svg><use href="#i-plus"/></svg></button></footer>
+  </form>
+</dialog>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='/js/index.js') }}"></script>{% endblock %}

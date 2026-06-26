@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Central de ajuda · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">SUPORTE AO USUÁRIO</span><h1>Central de ajuda</h1><p>Respostas rápidas sobre cadastro, matriz, aprovação, Bizagi e n8n.</p></div></section>
+<section class="help-grid">
+  <article class="panel help-card"><span>01</span><h2>Criar e configurar um processo</h2><p>Na Visão geral, clique em <b>Novo processo</b>. Preencha a identificação, salve e depois adicione os perfis e permissões.</p><a href="/processes">Abrir processos</a></article>
+  <article class="panel help-card"><span>02</span><h2>Enviar para aprovação</h2><p>O botão cria uma tarefa na fila do fluxo ativo. Primeiro vai ao revisor técnico e depois ao aprovador final.</p><a href="/approval-flows">Ver fila e responsáveis</a></article>
+  <article class="panel help-card"><span>03</span><h2>Interpretar a matriz</h2><p>As colunas representam ações. Dependências como Visualizar são adicionadas automaticamente quando exigidas.</p><a href="/permissions">Consultar permissões</a></article>
+  <article class="panel help-card"><span>04</span><h2>Usar o n8n</h2><p>Configure o webhook no <code>.env</code>. O sistema envia eventos de aprovação e integração para o workflow ativo.</p><a href="/integrations">Abrir integrações</a></article>
+  <article class="panel help-card"><span>05</span><h2>Sincronizar com Bizagi</h2><p>Somente versões aprovadas podem iniciar um caso. Homologue primeiro com a simulação e valide os XPaths.</p><a href="/integrations">Ver estado do Bizagi</a></article>
+  <article class="panel help-card"><span>06</span><h2>Atalhos</h2><p><kbd>Ctrl/⌘ + K</kbd> busca global. <kbd>Ctrl/⌘ + S</kbd> salva o processo. <kbd>Esc</kbd> fecha menus e diálogos.</p><a href="/documentation">Abrir documentação</a></article>
+</section>
+{% endblock %}

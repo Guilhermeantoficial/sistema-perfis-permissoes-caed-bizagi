@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Perfis · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">CATÁLOGO CONSOLIDADO</span><h1>Perfis</h1><p>Visão transversal dos perfis definidos em todas as matrizes de processo.</p></div><a class="button button--primary" href="/processes"><svg><use href="#i-plus"/></svg>Adicionar em um processo</a></section>
+<div class="admin-layout">
+  <section class="panel admin-panel">
+    <header class="panel-header admin-panel-header"><div><h2>Perfis cadastrados <span>{{ rows|length }}</span></h2><p>O perfil é administrado dentro do processo ao qual pertence.</p></div><label class="control-with-helper search-control"><span class="control-input"><svg><use href="#i-search"/></svg><input id="catalogSearch" type="search" placeholder="Filtrar perfis"></span><small>Pesquise por perfil, hierarquia ou processo.</small></label></header>
+    <div class="table-scroll"><table class="data-table"><thead><tr><th>Perfil</th><th>Hierarquia</th><th>Tipo de agente</th><th>Processo</th><th>Permissões</th><th></th></tr></thead><tbody id="catalogBody">{% for profile, process in rows %}<tr data-search="{{ (profile.profile_name ~ ' ' ~ profile.hierarchy ~ ' ' ~ profile.agent_type ~ ' ' ~ process.name)|lower }}"><td><strong>{{ profile.profile_name }}</strong><small>{{ profile.source_reference }}</small></td><td>{{ profile.hierarchy }}</td><td>{{ profile.agent_type }}</td><td><a href="/processes/{{ process.id }}">{{ process.code }} · {{ process.name }}</a></td><td><span class="table-badge">{{ profile.permissions|length }}</span></td><td><a class="table-icon-button" href="/processes/{{ process.id }}" title="Abrir matriz"><svg><use href="#i-eye"/></svg></a></td></tr>{% endfor %}</tbody></table></div>
+  </section>
+  <aside class="panel admin-side-card"><h3>Distribuição por hierarquia</h3><p>Quantidade de perfis em cada contexto organizacional.</p><dl>{% for hierarchy, count in hierarchy_counts.most_common() %}<div><dt>{{ hierarchy }}</dt><dd>{{ count }}</dd></div>{% endfor %}</dl></aside>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='/js/catalog.js') }}"></script>{% endblock %}

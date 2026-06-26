@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: caed-perfis-permissoes-config
+data:
+  APP_NAME: Gestão de Perfis e Permissões
+  APP_VERSION: 2.0.0
+  RUN_MIGRATIONS_ON_STARTUP: "false"
+  SEED_ON_STARTUP: "false"
+  AUTH_MODE: oidc
+  SESSION_HTTPS_ONLY: "true"
+  FORCE_HTTPS: "true"
+  ENABLE_API_DOCS: "false"
+  LOG_JSON: "true"
+  METRICS_ENABLED: "true"

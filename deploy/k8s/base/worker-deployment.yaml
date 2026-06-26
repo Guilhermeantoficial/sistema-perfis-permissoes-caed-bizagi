@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caed-perfis-permissoes-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: caed-perfis-permissoes
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: caed-perfis-permissoes
+        component: worker
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      containers:
+        - name: worker
+          image: ghcr.io/ORGANIZACAO/caed-perfis-permissoes:TAG
+          args: ["worker"]
+          envFrom:
+            - configMapRef:
+                name: caed-perfis-permissoes-config
+            - secretRef:
+                name: caed-perfis-permissoes-secrets
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

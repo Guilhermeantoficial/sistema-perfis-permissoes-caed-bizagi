@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caed-perfis-permissoes-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: caed-perfis-permissoes
+      component: web
+  template:
+    metadata:
+      labels:
+        app: caed-perfis-permissoes
+        component: web
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      containers:
+        - name: web
+          image: ghcr.io/ORGANIZACAO/caed-perfis-permissoes:TAG
+          args: ["web"]
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: caed-perfis-permissoes-config
+            - secretRef:
+                name: caed-perfis-permissoes-secrets
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 768Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

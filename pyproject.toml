@@ -1,0 +1,25 @@
+[project]
+name = "caed-perfis-permissoes"
+version = "2.0.0"
+description = "Gestão corporativa de processos, perfis, permissões, aprovações e integrações Bizagi/n8n."
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --disable-warnings --maxfail=1"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B008"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = true
+check_untyped_defs = true
+exclude = ["alembic/versions"]

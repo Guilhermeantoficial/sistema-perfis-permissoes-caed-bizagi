@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Documentação · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">BASE DE CONHECIMENTO</span><h1>Documentação</h1><p>Guias funcionais, regras de negócio, arquitetura e materiais de integração.</p></div><a class="button button--primary" href="/docs" target="_blank">Abrir documentação da API</a></section>
+<section class="doc-grid"><a class="panel doc-card doc-card--featured" href="/docs" target="_blank"><svg><use href="#i-code"/></svg><div><strong>API interativa</strong><p>Teste endpoints, payloads e respostas diretamente no Swagger.</p></div><span>ABRIR ↗</span></a>{% for document in documents %}<a class="panel doc-card" href="/documentation/files/{{ document }}"><svg><use href="#i-book"/></svg><div><strong>{{ document }}</strong><p>Baixe ou abra o material armazenado junto ao projeto.</p></div><span>BAIXAR ↓</span></a>{% endfor %}</section>
+{% endblock %}

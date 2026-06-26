@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+namePrefix: hml-
+images:
+  - name: ghcr.io/ORGANIZACAO/caed-perfis-permissoes
+    newTag: homologation
+patches:
+  - target:
+      kind: ConfigMap
+      name: caed-perfis-permissoes-config
+    patch: |-
+      - op: add
+        path: /data/APP_ENV
+        value: homologation
+      - op: replace
+        path: /data/ENABLE_API_DOCS
+        value: "true"

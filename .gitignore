@@ -1,0 +1,51 @@
+# Ambientes e segredos
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Credenciais e certificados
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Bancos locais
+*.db
+*.sqlite
+*.sqlite3
+postgres-data/
+
+# Logs e arquivos temporários
+*.log
+logs/
+tmp/
+temp/
+uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# Sistema operacional
+Thumbs.db
+.DS_Store
+
+# Node, caso futuramente utilizado
+node_modules/
+
+# Arquivos compactados de entrega
+*.zip

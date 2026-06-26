@@ -1,0 +1,36 @@
+SISTEMA DE PERFIS E PERMISSÕES CAEd · VERSÃO 2.0
+
+1. PARA RODAR AGORA NO WINDOWS
+   - Abra esta pasta no VS Code.
+   - Abra Terminal > Novo Terminal.
+   - Execute:
+       Set-ExecutionPolicy -Scope Process Bypass
+       .\scripts\setup_windows.ps1
+       .\scripts\run_windows.bat
+   - Acesse http://127.0.0.1:8000
+
+2. PARA RODAR COM DOCKER E POSTGRESQL
+   - Copie .env.local.docker.example para .env.local.docker.
+   - Execute:
+       $env:ENV_FILE=".env.local.docker"
+       docker compose --env-file .env.local.docker -f compose.yaml -f compose.local.yaml up --build
+
+3. ANTES DA HOMOLOGAÇÃO
+   - Leia docs/SOLICITACOES_PARA_INFRAESTRUTURA.md.
+   - Preencha .env.homolog.example sem versionar os segredos.
+   - Solicite SSO/OIDC, PostgreSQL, DNS/HTTPS, firewall, Bizagi e n8n.
+   - Execute python -m app.cli check-config.
+
+4. ANTES DA PRODUÇÃO
+   - Use .env.production.example apenas como lista de variáveis.
+   - Guarde segredos em cofre corporativo.
+   - Execute migrações como job único.
+   - Inicie web e worker separadamente.
+   - Faça smoke test e valide o plano de rollback.
+
+5. SOLICITAÇÃO DE ACESSO
+   - O menu “Solicitações de acesso” permite ao usuário pedir papel ou permissões.
+   - Um aprovador analisa e aplica o acesso.
+   - Toda decisão gera registro de auditoria.
+
+NÃO PUBLIQUE arquivos .env, senhas, Client Secrets ou tokens no Git.

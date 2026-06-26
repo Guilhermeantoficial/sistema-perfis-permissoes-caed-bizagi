@@ -1,0 +1,59 @@
+name: caed-perfis-permissoes
+
+x-app-common: &app-common
+  build:
+    context: .
+  image: caed/perfis-permissoes:${IMAGE_TAG:-local}
+  env_file:
+    - ${ENV_FILE:-.env}
+  networks:
+    - backend
+  restart: unless-stopped
+  security_opt:
+    - no-new-privileges:true
+  read_only: true
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+
+services:
+
+  migrate:
+    <<: *app-common
+    command: ["migrate"]
+    restart: "no"
+
+  seed:
+    <<: *app-common
+    command: ["seed"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: "no"
+
+  web:
+    <<: *app-common
+    command: ["web"]
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  worker:
+    <<: *app-common
+    command: ["worker"]
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    internal: true
+  edge:

@@ -1,0 +1,35 @@
+{
+  "info": {
+    "name": "Perfis e Permissões - Bizagi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "bizagi_base_url", "value": "https://SEU-AMBIENTE.bizagi.com"},
+    {"key": "client_id", "value": ""},
+    {"key": "client_secret", "value": ""},
+    {"key": "process_id", "value": ""},
+    {"key": "access_token", "value": ""}
+  ],
+  "item": [
+    {
+      "name": "1 - Obter token",
+      "request": {
+        "method": "POST",
+        "auth": {"type": "basic", "basic": [{"key": "username", "value": "{{client_id}}", "type": "string"}, {"key": "password", "value": "{{client_secret}}", "type": "string"}]},
+        "header": [{"key": "Content-Type", "value": "application/x-www-form-urlencoded"}],
+        "body": {"mode": "urlencoded", "urlencoded": [{"key": "grant_type", "value": "client_credentials", "type": "text"}, {"key": "scope", "value": "api", "type": "text"}]},
+        "url": "{{bizagi_base_url}}/oauth2/server/token"
+      }
+    },
+    {
+      "name": "2 - Iniciar caso",
+      "request": {
+        "method": "POST",
+        "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{access_token}}", "type": "string"}]},
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\n  \"startParameters\": []\n}"},
+        "url": "{{bizagi_base_url}}/odata/data/processes({{process_id}})/start"
+      }
+    }
+  ]
+}

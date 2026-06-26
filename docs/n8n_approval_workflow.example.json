@@ -1,0 +1,84 @@
+{
+  "name": "CAEd - Perfis e Permissões - Eventos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "caed-perfis-permissoes",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-caed",
+      "name": "Webhook CAEd",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-520, 0],
+      "webhookId": "replace-after-import"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {"caseSensitive": true, "leftValue": "", "typeValidation": "strict"},
+                "conditions": [
+                  {"leftValue": "={{ $json.body.event }}", "rightValue": "approval.requested", "operator": {"type": "string", "operation": "equals"}}
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Aprovação solicitada"
+            },
+            {
+              "conditions": {
+                "options": {"caseSensitive": true, "leftValue": "", "typeValidation": "strict"},
+                "conditions": [
+                  {"leftValue": "={{ $json.body.event }}", "rightValue": "approval.approved", "operator": {"type": "string", "operation": "equals"}}
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Aprovado"
+            }
+          ]
+        },
+        "options": {"fallbackOutput": "extra"}
+      },
+      "id": "switch-event",
+      "name": "Roteador de eventos",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [-280, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"accepted\":true,\"event\":\"{{ $json.body.event }}\"}",
+        "options": {"responseCode": 202}
+      },
+      "id": "response",
+      "name": "Responder ao sistema",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [0, 180]
+    }
+  ],
+  "connections": {
+    "Webhook CAEd": {
+      "main": [[{"node": "Roteador de eventos", "type": "main", "index": 0}]]
+    },
+    "Roteador de eventos": {
+      "main": [
+        [{"node": "Responder ao sistema", "type": "main", "index": 0}],
+        [{"node": "Responder ao sistema", "type": "main", "index": 0}],
+        [{"node": "Responder ao sistema", "type": "main", "index": 0}]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "versionId": "replace-after-import",
+  "meta": {"templateCredsSetupCompleted": false},
+  "tags": []
+}

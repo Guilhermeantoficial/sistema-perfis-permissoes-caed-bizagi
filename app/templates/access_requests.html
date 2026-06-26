@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Solicitações de acesso · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><span class="eyebrow">CONTROLE DE ACESSO</span><h1>Solicitações de acesso</h1><p>Solicite um papel ou permissões adicionais. A concessão só ocorre após aprovação.</p></div>
+  <button class="button button--primary" data-open-dialog="accessRequestDialog"><svg><use href="#i-plus"/></svg>Nova solicitação</button>
+</section>
+<section class="panel admin-panel">
+  <header class="panel-header admin-panel-header"><div><h2>Solicitações <span>{{ access_requests|length }}</span></h2><p>{% if can_approve %}Você visualiza todas as solicitações do ambiente.{% else %}Você visualiza apenas as suas solicitações.{% endif %}</p></div><label class="control-with-helper search-control"><span class="control-input"><svg><use href="#i-search"/></svg><input id="catalogSearch" type="search" placeholder="Buscar solicitação"></span><small>Usuário, processo, papel ou status.</small></label></header>
+  <div class="table-scroll"><table class="data-table"><thead><tr><th>Solicitante</th><th>Processo</th><th>Papel solicitado</th><th>Permissões</th><th>Justificativa</th><th>Status</th><th>Responsável</th>{% if can_approve %}<th>Ações</th>{% endif %}</tr></thead><tbody id="catalogBody">
+  {% for item in access_requests %}
+    <tr data-search="{{ (item.requester.name ~ ' ' ~ (item.process.name if item.process else '') ~ ' ' ~ item.requested_role ~ ' ' ~ item.status)|lower }}">
+      <td><strong>{{ item.requester.name }}</strong><small>{{ item.requester.email }}</small></td>
+      <td>{% if item.process %}<strong>{{ item.process.code }}</strong><small>{{ item.process.name }}</small>{% else %}<span>Todo o sistema</span>{% endif %}</td>
+      <td>{{ item.requested_role or 'Sem alteração de papel' }}</td>
+      <td><small class="code-wrap">{{ item.requested_permissions_json }}</small></td>
+      <td>{{ item.justification }}</td>
+      <td><span class="status-label status-label--{{ 'pending_approval' if item.status == 'pending' else ('approved' if item.status == 'approved' else 'draft') }}"><i></i>{{ item.status|replace('_',' ')|title }}</span></td>
+      <td>{{ item.assigned_to }}</td>
+      {% if can_approve %}<td>{% if item.status == 'pending' %}<div class="row-actions"><form method="post" action="/api/access-requests/{{ item.id }}/approve"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><input type="hidden" name="note" value="Acesso aprovado pelo responsável."><button class="button button--small button--primary" type="submit">Aprovar</button></form><form method="post" action="/api/access-requests/{{ item.id }}/reject"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><input type="hidden" name="note" value="Solicitação recusada pelo responsável."><button class="button button--small button--danger" type="submit">Recusar</button></form></div>{% else %}<small>{{ item.decision_by }}</small>{% endif %}</td>{% endif %}
+    </tr>
+  {% else %}<tr><td colspan="8"><div class="empty-state"><strong>Nenhuma solicitação registrada.</strong><span>Use “Nova solicitação” para pedir acesso.</span></div></td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+<dialog id="accessRequestDialog" class="modal"><form method="post" action="/access-requests"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><header class="modal-header"><div><span>SOLICITAÇÃO DE ACESSO</span><h2>Solicitar permissões</h2><p>Informe somente os acessos necessários para executar sua atividade.</p></div><button type="button" data-close-dialog="accessRequestDialog"><svg><use href="#i-close"/></svg></button></header><section class="modal-body form-grid">
+<label class="form-field"><span>Processo</span><select name="process_id"><option value="">Todo o sistema</option>{% for process in processes %}<option value="{{ process.id }}">{{ process.code }} · {{ process.name }}</option>{% endfor %}</select><small>Restrinja a concessão a um processo quando possível.</small></label>
+<label class="form-field"><span>Papel solicitado</span><select name="requested_role"><option value="">Manter meu papel atual</option>{% for role in roles %}<option value="{{ role.name }}">{{ role.name }}</option>{% endfor %}</select><small>Altera o conjunto padrão de permissões após aprovação.</small></label>
+<div class="form-field form-field--full"><span>Permissões adicionais</span><div class="permission-request-grid">{% for permission in system_permissions %}<label><input type="checkbox" name="requested_permissions" value="{{ permission }}"><span>{{ permission }}</span></label>{% endfor %}</div><small>Marque apenas as ações adicionais necessárias. Permissões temporárias podem ser limitadas por processo.</small></div>
+<label class="form-field form-field--full"><span>Justificativa *</span><textarea name="justification" required minlength="10" maxlength="4000" rows="5" placeholder="Descreva a atividade, o período e por que o acesso é necessário."></textarea><small>A justificativa será preservada na auditoria e analisada pelo aprovador.</small></label>
+</section><footer class="modal-footer"><button class="button" type="button" data-close-dialog="accessRequestDialog">Cancelar</button><button class="button button--primary" type="submit">Enviar solicitação</button></footer></form></dialog>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='/js/catalog.js') }}"></script>{% endblock %}

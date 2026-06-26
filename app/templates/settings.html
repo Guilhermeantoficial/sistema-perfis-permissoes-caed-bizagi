@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Parâmetros · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">CONFIGURAÇÃO DO AMBIENTE</span><h1>Parâmetros</h1><p>Ajustes funcionais que podem ser alterados sem modificar o código-fonte.</p></div></section>
+<section class="settings-list">{% for item in settings_rows %}<form class="panel setting-card" method="post" action="/settings"><input type="hidden" name="key" value="{{ item.key }}"><header><div><code>{{ item.key }}</code><strong>{{ item.description }}</strong></div><span>Atualizado em {{ item.updated_at.strftime('%d/%m/%Y %H:%M') }}</span></header><div><input name="value" value="{{ item.value }}" aria-label="Valor de {{ item.key }}"><button class="button button--primary" type="submit">Salvar</button></div></form>{% endfor %}</section>
+<section class="panel guidance-panel"><svg><use href="#i-info"/></svg><div><strong>Segredos de integração não são editados nesta tela.</strong><p>Client secrets, tokens e chaves de webhook permanecem no arquivo <code>.env</code> para reduzir exposição acidental.</p></div></section>
+{% endblock %}

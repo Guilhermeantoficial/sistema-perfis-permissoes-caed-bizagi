@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block title %}{{ process.code }} · Console do processo{% endblock %}
+{% block content %}
+<section class="process-page-heading">
+  <div>
+    <nav class="breadcrumb"><a href="/">Perfis e Permissões</a><span>›</span><b id="breadcrumbCode">{{ process.code }}</b></nav>
+    <h1>Console do processo</h1>
+    <p>Configure perfis, permissões e o fluxo de aprovação deste processo.</p>
+  </div>
+  <div class="process-heading-actions">
+    <button id="syncButton" class="button" type="button" {% if not bizagi_enabled %}disabled title="Configure o arquivo .env para habilitar"{% endif %}><svg><use href="#i-sync"/></svg>Sincronizar com Bizagi</button>
+    <button id="saveButton" class="button" type="button"><svg><use href="#i-save"/></svg>Salvar rascunho</button>
+    <button id="submitButton" class="button button--primary" type="button"><svg><use href="#i-send"/></svg>Enviar para aprovação</button>
+    <div class="action-menu-wrap">
+      <button id="processMoreButton" class="button button--icon" type="button" aria-label="Mais opções"><svg><use href="#i-more"/></svg></button>
+      <div id="processMoreMenu" class="action-menu" hidden>
+        <button id="approveButton" type="button"><svg><use href="#i-check"/></svg>Aprovar etapa</button>
+        <button id="rejectButton" class="menu-danger" type="button"><svg><use href="#i-close"/></svg>Devolver para ajustes</button>
+        <button id="reopenButton" type="button"><svg><use href="#i-sync"/></svg>Reabrir edição</button>
+        <span></span>
+        <button id="payloadButton" type="button"><svg><use href="#i-code"/></svg>Visualizar payload</button>
+        <button id="simulateButton" type="button"><svg><use href="#i-flow"/></svg>Simular Bizagi</button>
+        <span></span>
+        <button data-export="json" type="button"><svg><use href="#i-download"/></svg>Exportar JSON</button>
+        <button data-export="csv" type="button"><svg><use href="#i-download"/></svg>Exportar CSV</button>
+        <button data-export="docx" type="button"><svg><use href="#i-download"/></svg>Exportar DOCX</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process-summary panel">
+  <article><span>Código do processo</span><div><strong id="titleboardCode">{{ process.code }}</strong><button id="copyProcessCode" type="button" title="Copiar código"><svg><use href="#i-copy"/></svg></button></div></article>
+  <article class="process-summary-name"><span>Nome do processo</span><strong id="pageTitle">{{ process.name }}</strong></article>
+  <article><span>Responsável</span><div class="summary-person"><b class="mini-avatar">{{ (process.responsible or 'NI')[:2]|upper }}</b><strong id="summaryResponsible">{{ process.responsible or 'Não informado' }}</strong></div></article>
+  <article><span>Status</span><strong id="statusBadge" class="status-label status-label--{{ process.status }}"><i></i>{% if process.status == 'draft' %}Rascunho{% elif process.status == 'pending_approval' %}Pendente de aprovação{% elif process.status == 'approved' %}Aprovado{% elif process.status == 'synced' %}Sincronizado{% else %}{{ process.status }}{% endif %}</strong></article>
+  <article><span>Última atualização</span><strong id="summaryUpdatedAt">{{ process.updated_at.strftime('%d/%m/%Y %H:%M') }}</strong><small id="versionBadge">Versão {{ process.version }}</small></article>
+</section>
+
+<nav class="section-tabs" aria-label="Seções do processo">
+  <button class="is-active" data-scroll-target="identitySection" type="button">Identificação</button>
+  <button data-scroll-target="approvalFlowPanel" type="button">Fluxo de aprovação</button>
+  <button data-scroll-target="documentField" type="button">Documento de referência</button>
+  <button data-scroll-target="auditPanel" type="button">Histórico de versões</button>
+</nav>
+
+<div class="process-workspace">
+  <section class="process-main-column">
+    <section class="identity-section" id="identitySection">
+      <div class="form-row form-row--three">
+        <label class="form-field"><span>Código do processo <b>*</b></span><input id="processCode" maxlength="80" value="{{ process.code }}"><small>Identificador único do processo no sistema.</small></label>
+        <label class="form-field form-field--double"><span>Nome do processo <b>*</b></span><div class="counted-input"><input id="processName" maxlength="250" value="{{ process.name }}"><em id="processNameCounter">{{ process.name|length }} / 250</em></div><small>Título exibido na listagem e nas aprovações.</small></label>
+        <label class="form-field"><span>Responsável <b>*</b></span><input id="processResponsible" maxlength="160" value="{{ process.responsible }}"><small>Pessoa ou área responsável por gerenciar o processo.</small></label>
+      </div>
+      <div class="form-row form-row--three">
+        <label class="form-field"><span>Área <b>*</b></span><input id="processArea" maxlength="160" value="{{ process.area }}" placeholder="Ex.: Tecnologia da Informação"><small>Unidade de negócio à qual o processo pertence.</small></label>
+        <label class="form-field form-field--double"><span>Descrição</span><div class="counted-input counted-input--textarea"><textarea id="processDescription" rows="3" maxlength="5000">{{ process.description }}</textarea><em id="descriptionCounter">{{ process.description|length }} / 5000</em></div><small>Resumo do objetivo e do escopo do processo.</small></label>
+        <label class="form-field" id="documentField"><span>Documento de referência</span><div class="field-with-action"><input id="processSourceDocument" maxlength="255" value="{{ process.source_document }}" placeholder="Opcional"><button type="button" title="Limpar documento" id="clearDocumentButton"><svg><use href="#i-close"/></svg></button></div><small>(Opcional) Documento que orienta ou detalha a definição.</small></label>
+      </div>
+      <div class="record-meta"><span>Criado em {{ process.created_at.strftime('%d/%m/%Y %H:%M') }}</span><span id="dirtyIndicator">Sem alterações pendentes</span><span>Atualizado em {{ process.updated_at.strftime('%d/%m/%Y %H:%M') }}</span></div>
+      <input id="actor" type="hidden" value="{{ current_user }}">
+      <span id="sourceDocumentSummary" hidden>{{ process.source_document }}</span>
+      <span id="identityLockStatus" hidden></span>
+      <span id="workflowCode" hidden>{{ process.status }}</span>
+    </section>
+
+    <section class="panel permission-section" id="matrixPanel">
+      <header class="permission-header">
+        <div><h2>Perfis e permissões</h2><p>Marque as permissões concedidas a cada perfil neste processo.</p></div>
+        <div class="permission-toolbar">
+          <label class="toolbar-control">
+            <span>Filtrar perfil</span>
+            <select id="profileFilter" aria-label="Filtrar perfil"></select>
+            <small>Mostre todos os perfis ou somente o perfil selecionado.</small>
+          </label>
+          <div class="toolbar-action"><button id="addProfileButton" class="button button--primary" type="button"><svg><use href="#i-plus"/></svg>Adicionar perfil</button><small>Crie um novo perfil no processo.</small></div>
+          <div class="toolbar-action"><button id="duplicateProfileButton" class="button" type="button"><svg><use href="#i-copy"/></svg>Duplicar perfil</button><small>Copie regras do perfil selecionado.</small></div>
+          <div class="toolbar-action"><button id="deleteProfileButton" class="button button--danger" type="button"><svg><use href="#i-trash"/></svg>Excluir perfil</button><small>Remova o perfil selecionado.</small></div>
+        </div>
+      </header>
+
+      <div id="matrixValidation" class="inline-error" hidden></div>
+      <div class="matrix-caption"><span><b id="matrixVisibleCount">{{ process.profiles|length }}</b> perfis na visualização</span><span>Clique no nome do perfil para editar hierarquia, agente e observações.</span></div>
+      <div class="table-scroll permission-table-scroll">
+        <table class="permission-table">
+          <thead>
+            <tr>
+              <th>Hierarquia <button class="help-dot" title="Nível territorial ou organizacional do perfil.">?</button></th>
+              <th>Perfil <button class="help-dot" title="Nome que identifica o conjunto de acessos.">?</button></th>
+              <th>Tipo de agente <button class="help-dot" title="Função exercida pelo usuário associado ao perfil.">?</button></th>
+              <th>Visualizar <button class="help-dot" title="Permite consultar registros e informações.">?</button></th>
+              <th>Registrar <button class="help-dot" title="Permite criar novos registros.">?</button></th>
+              <th>Editar <button class="help-dot" title="Permite alterar registros existentes.">?</button></th>
+              <th>Excluir <button class="help-dot" title="Permite remover registros.">?</button></th>
+              <th>Monitorar <button class="help-dot" title="Permite acompanhar ocorrências e indicadores.">?</button></th>
+              <th>Aprovar <button class="help-dot" title="Permite aprovar versões ou decisões do fluxo.">?</button></th>
+              <th>Administrar <button class="help-dot" title="Concede todas as permissões e controles administrativos.">?</button></th>
+              <th aria-label="Ações"></th>
+            </tr>
+          </thead>
+          <tbody id="matrixBody"></tbody>
+        </table>
+      </div>
+      <div class="permission-legend" id="permissionLegend"><span><i class="legend-check">✓</i> Permitido</span><span><i class="legend-partial">−</i> Dependência automática</span><span><i class="legend-empty"></i> Não permitido</span></div>
+    </section>
+  </section>
+
+  <aside class="process-side-column">
+    <section class="panel side-panel" id="auditPanel">
+      <header><div><h3>Rastreabilidade</h3><p>Histórico das alterações realizadas.</p></div><a href="#auditPanel">Ver tudo</a></header>
+      <div class="audit-timeline" id="auditTimeline"></div>
+      <span id="auditMetric" hidden>{{ process.audit_events|length }}</span>
+    </section>
+
+    <section class="panel side-panel" id="approvalFlowPanel">
+      <header><div><h3>Fluxo de aprovação</h3><p>Etapas necessárias para publicar a matriz.</p></div><a href="/approval-flows">Ver fila</a></header>
+      <div id="approvalDestination" class="approval-destination" hidden><span>Destino atual</span><strong id="approvalDestinationStage">—</strong><small id="approvalDestinationAssignee">—</small></div>
+      <ol class="approval-flow" id="approvalFlow">
+        <li data-step="draft"><i></i><div><strong>Elaboração</strong><span>Responsável do processo</span><small>Matriz editável</small></div></li>
+        <li data-step="pending_approval"><i></i><div><strong>Revisão técnica</strong><span>Revisor designado</span><small>Aguardando análise</small></div></li>
+        <li data-step="approved"><i></i><div><strong>Aprovação final</strong><span>Administrador</span><small>Versão bloqueada</small></div></li>
+        <li data-step="synced"><i></i><div><strong>Integração Bizagi</strong><span>Conector do sistema</span><small>Envio concluído</small></div></li>
+      </ol>
+    </section>
+  </aside>
+</div>
+
+<dialog id="profileDialog" class="modal modal--profile">
+  <form id="profileForm" method="dialog">
+    <header class="modal-header"><div><span id="profileDialogEyebrow">NOVO PERFIL</span><h2 id="profileDialogTitle">Cadastrar perfil</h2><p>Defina o contexto organizacional e as permissões do perfil.</p></div><button id="closeProfileDialog" type="button" aria-label="Fechar"><svg><use href="#i-close"/></svg></button></header>
+    <section class="modal-body form-grid">
+      <label class="form-field"><span>Hierarquia *</span><input id="profileHierarchy" maxlength="120" required placeholder="Ex.: Estado"><small>Nível territorial ou organizacional em que o perfil atua.</small></label>
+      <label class="form-field form-field--wide"><span>Nome do perfil *</span><input id="profileName" maxlength="220" required placeholder="Ex.: Coordenação Estadual"><small>Nome que aparecerá no filtro e na matriz.</small></label>
+      <label class="form-field"><span>Tipo de agente</span><input id="profileAgentType" maxlength="220" placeholder="Ex.: Coordenador Estadual"><small>Função ou agente associado ao perfil.</small></label>
+      <label class="form-field"><span>Fonte / referência</span><input id="profileSourceReference" maxlength="100" placeholder="Cadastro manual"><small>Origem da regra, documento ou decisão de negócio.</small></label>
+      <label class="form-field form-field--full"><span>Observações</span><textarea id="profileNotes" rows="3" maxlength="2000" placeholder="Inclua exceções ou orientações específicas"></textarea><small>Informações complementares para revisão e auditoria.</small></label>
+      <div class="profile-permission-picker form-field--full"><span>Permissões iniciais</span><p>Selecione as ações permitidas. Dependências obrigatórias serão aplicadas automaticamente.</p><div id="profilePermissionPicker"></div></div>
+      <div id="profileFormError" class="inline-error form-field--full" hidden></div>
+    </section>
+    <footer class="modal-footer"><button id="cancelProfileDialog" class="button" type="button">Cancelar</button><button class="button button--primary" type="submit">Salvar perfil</button></footer>
+  </form>
+</dialog>
+
+<dialog id="payloadDialog" class="modal modal--payload">
+  <form method="dialog">
+    <header class="modal-header"><div><span>INTEGRAÇÃO BIZAGI</span><h2>Payload preparado</h2><p>Revise o contrato antes de executar uma integração real.</p></div><button id="closePayloadButton" type="button" aria-label="Fechar"><svg><use href="#i-close"/></svg></button></header>
+    <section class="payload-body"><pre id="payloadPreview"></pre></section>
+    <footer class="modal-footer"><span>Nenhum conteúdo é enviado nesta visualização.</span><button id="copyPayloadButton" class="button button--primary" type="button"><svg><use href="#i-copy"/></svg>Copiar JSON</button></footer>
+  </form>
+</dialog>
+{% endblock %}
+{% block scripts %}
+<script id="initialData" type="application/json">{{ initial_data|tojson }}</script>
+<div id="processRuntimeConfig"
+  data-bizagi-enabled="{{ 'true' if bizagi_enabled else 'false' }}"
+  data-can-edit="{{ 'true' if 'process.edit' in current_permissions else 'false' }}"
+  data-can-submit="{{ 'true' if 'process.submit' in current_permissions else 'false' }}"
+  data-can-approve="{{ 'true' if 'process.approve' in current_permissions else 'false' }}"
+  data-can-reopen="{{ 'true' if 'process.reopen' in current_permissions else 'false' }}"
+  data-can-integrate="{{ 'true' if 'integration.execute' in current_permissions else 'false' }}"
+  data-can-export="{{ 'true' if 'process.export' in current_permissions else 'false' }}"
+  hidden></div>
+<script src="{{ url_for('static', path='/js/app.js') }}"></script>
+{% endblock %}

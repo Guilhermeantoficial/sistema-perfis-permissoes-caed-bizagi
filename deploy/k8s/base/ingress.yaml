@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: caed-perfis-permissoes
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 10m
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [perfis-permissoes.exemplo.org.br]
+      secretName: caed-perfis-permissoes-tls
+  rules:
+    - host: perfis-permissoes.exemplo.org.br
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: caed-perfis-permissoes
+                port:
+                  number: 80

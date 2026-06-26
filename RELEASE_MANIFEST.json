@@ -1,0 +1,743 @@
+{
+  "product": "Sistema de Perfis e Permissões CAEd / Bizagi / n8n",
+  "version": "2.0.0",
+  "generated_at_utc": "2026-06-25T21:29:25.432333+00:00",
+  "validation": {
+    "automated_tests": 12,
+    "ruff": "passed",
+    "python_compile": "passed",
+    "javascript_syntax": "passed",
+    "yaml_parse": "passed",
+    "alembic_postgresql_offline": "passed",
+    "http_smoke_test": "passed",
+    "docker_build": "not_executed_no_docker_engine",
+    "pip_audit": "not_executed_no_pypi_connectivity"
+  },
+  "files": [
+    {
+      "path": ".dockerignore",
+      "size_bytes": 152,
+      "sha256": "e43d38aa021f8473d4d6b7d5c9da527b4dee9c8557ade96da86a6c45197d28f2"
+    },
+    {
+      "path": ".env.example",
+      "size_bytes": 755,
+      "sha256": "283e29ceee500b8fa5fdfbe3cd7bf5dd5e04c6a1459f5e00ac256a4f985fdd96"
+    },
+    {
+      "path": ".env.homolog.example",
+      "size_bytes": 2047,
+      "sha256": "e2f92d700910468a3c9a042074f69460de48e9f94e9fd463fc377ac9387ee47a"
+    },
+    {
+      "path": ".env.local.docker.example",
+      "size_bytes": 842,
+      "sha256": "b72658ebb30c22927c01634eecc0ec946fda94805f828eab42edaae1b4b34e78"
+    },
+    {
+      "path": ".env.production.example",
+      "size_bytes": 1991,
+      "sha256": "78d2975da5ad9c9a73d586d471b72d73034b2bd96f2a6fa0784dc477aa09caeb"
+    },
+    {
+      "path": ".github/dependabot.yml",
+      "size_bytes": 277,
+      "sha256": "d20d4a0a485b47864f2f3a3f0223f697dd2fb9f3316fc67ded6b1f07b33aa630"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "size_bytes": 885,
+      "sha256": "99fef2c989a59a33a44976dc16f11e29a34525d46a750d12897c307e1ab68203"
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "size_bytes": 744,
+      "sha256": "490aab8544a1c2d67e5cf76c79f46d637bc8f7394d7345f17adc9d1a1aa0b4d6"
+    },
+    {
+      "path": ".gitignore",
+      "size_bytes": 287,
+      "sha256": "8a11fc95e0ecdea4549ddf20fdfe41d9c4072399858b68153352f1e8fb3b412f"
+    },
+    {
+      "path": "Dockerfile",
+      "size_bytes": 782,
+      "sha256": "49755516b35ed84341b46ca960ce5381b48a4788b9e85e2538bc3259be624a31"
+    },
+    {
+      "path": "LEIA-ME-PRIMEIRO.txt",
+      "size_bytes": 1379,
+      "sha256": "6387af822ced7a33e21d5943650ca4b5049e77839ece210d0e71743692e057a0"
+    },
+    {
+      "path": "Makefile",
+      "size_bytes": 780,
+      "sha256": "96ff7f8c52a519d2952731e387fecef2d7b78973c725971ed1ff655d37388e25"
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 4662,
+      "sha256": "52b9da5604fb865919e5ed67c0f95506679869e9d5f58933e4e4e8ae10c53732"
+    },
+    {
+      "path": "RELEASE_NOTES.md",
+      "size_bytes": 1000,
+      "sha256": "56dace1e834c57a7ce81b14604cfe93a4b26d3e0670d3b3e06e617a9f8792c24"
+    },
+    {
+      "path": "alembic/env.py",
+      "size_bytes": 1490,
+      "sha256": "50f90767a8656bdf11d377912b64d71085a9dde1e8b55215482ceabedac125f9"
+    },
+    {
+      "path": "alembic/script.py.mako",
+      "size_bytes": 592,
+      "sha256": "f19a902ea43cb1ea85523b9c27c5319039af6e724dcee8e23df34870a0e924d3"
+    },
+    {
+      "path": "alembic/versions/8d23b5403827_initial_production_schema.py",
+      "size_bytes": 22001,
+      "sha256": "3a145f93db90f1daba9ce5b3f71ad234a32dd475131f296de82a9b9473270ee8"
+    },
+    {
+      "path": "alembic.ini",
+      "size_bytes": 594,
+      "sha256": "9d0b3b55e7d40e48f69164ab938d5bfc5e97623ac415b1ee59634c2633c7a11a"
+    },
+    {
+      "path": "app/__init__.py",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "app/audit.py",
+      "size_bytes": 931,
+      "sha256": "1d7eced53936a270da7b3b56a0f849181d9ea2982a7a8f5b0ddff627c9abe60f"
+    },
+    {
+      "path": "app/auth.py",
+      "size_bytes": 4320,
+      "sha256": "f9e2f4e394b42610c50ace8f46d1977725f543e36bcd7e81e94972d6320b3566"
+    },
+    {
+      "path": "app/authorization.py",
+      "size_bytes": 5401,
+      "sha256": "459005d407872efa02caf109fd532738b53b061642f612b860e698f3194578fc"
+    },
+    {
+      "path": "app/cli.py",
+      "size_bytes": 3536,
+      "sha256": "98027e5b3850325d453e6bc3212e258916017964f932a9918d00f23c6f4201e2"
+    },
+    {
+      "path": "app/config.py",
+      "size_bytes": 9530,
+      "sha256": "beff2cd0550b57220db61438443eb44834d023ec480d5d8feb38b5bbbb9dc0d9"
+    },
+    {
+      "path": "app/database.py",
+      "size_bytes": 2285,
+      "sha256": "45005d38fdf1250eaafa86284d76d515454e2f167ccc86ff9ed12e4773a05ec2"
+    },
+    {
+      "path": "app/integrations/__init__.py",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "app/integrations/bizagi.py",
+      "size_bytes": 5037,
+      "sha256": "5cbcedaf961114a7fa779f62eab68492c0eb363265393191e3e950e3719f1785"
+    },
+    {
+      "path": "app/integrations/email.py",
+      "size_bytes": 1411,
+      "sha256": "929e9ecb73f4fb03584b918e8d63e0246337ffcd7cb572629a0be4a4fa5c82ff"
+    },
+    {
+      "path": "app/integrations/n8n.py",
+      "size_bytes": 3733,
+      "sha256": "6a1c7301665005f39c893cc36cd5aab351807cf6b4cedde4d4998896fe0cf4a4"
+    },
+    {
+      "path": "app/logging_config.py",
+      "size_bytes": 724,
+      "sha256": "85b2ae62ccae0ef2ec98c657eec3bb85f01e9993c6798d2f07c73799e685dac6"
+    },
+    {
+      "path": "app/main.py",
+      "size_bytes": 54603,
+      "sha256": "faa3af12cfd5f3d215d1567ba5c50c800824756e0c11d23b5c893ed5a9948bbf"
+    },
+    {
+      "path": "app/metrics.py",
+      "size_bytes": 1827,
+      "sha256": "1f314ffe469d64ec1ef5b7dae56b328378a6a645ea8c284f73e31ee45ea66bc4"
+    },
+    {
+      "path": "app/middleware.py",
+      "size_bytes": 7507,
+      "sha256": "80f66bce6dd0476f415d13545ca0b5494332087d858e94ec5bf3cf5591f1db27"
+    },
+    {
+      "path": "app/models.py",
+      "size_bytes": 15330,
+      "sha256": "f1b439e367a1e60694cfcf4d83ec210213b378f0d175929c650f6c545fc41201"
+    },
+    {
+      "path": "app/schemas.py",
+      "size_bytes": 4052,
+      "sha256": "8f907a00799badf5259dd9d1b6b50a70b19dc2d0481eb204b9bc5ab4bbf7a097"
+    },
+    {
+      "path": "app/services/__init__.py",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "app/services/access_request_service.py",
+      "size_bytes": 3576,
+      "sha256": "e5cf11a028507c910ff683d2a01e07c02afad409424e9e025849ec32815337ba"
+    },
+    {
+      "path": "app/services/admin_service.py",
+      "size_bytes": 9494,
+      "sha256": "be05454183ac0bcb57d06c281e518b10ba1bd0d70f97a1670a668deecd645a23"
+    },
+    {
+      "path": "app/services/export_service.py",
+      "size_bytes": 7129,
+      "sha256": "324b884091e92a116c2e4c04f0c3a58656d71dc10dfc76e8952dca98ee9f0fff"
+    },
+    {
+      "path": "app/services/outbox_service.py",
+      "size_bytes": 5596,
+      "sha256": "ff3b54aac286b33d5b799cea3722974d255a6d95539c56ce895681e6c033d887"
+    },
+    {
+      "path": "app/services/process_service.py",
+      "size_bytes": 14585,
+      "sha256": "190cf57e58c7c81b6e6c7f4a52ff93dbd4751d98adb64a0b9fd7c52ce5a89e55"
+    },
+    {
+      "path": "app/static/css/app.css",
+      "size_bytes": 56148,
+      "sha256": "bf21bdc0eaf6e45d2a18a0a1e92a91c80e2e25b2a503c3e83933c331263227b5"
+    },
+    {
+      "path": "app/static/img/caed-logo.png",
+      "size_bytes": 13203,
+      "sha256": "2902683d7307bd01661cb81922e46a6263d5ed435d31b935d66b0eb6d35abe66"
+    },
+    {
+      "path": "app/static/js/app.js",
+      "size_bytes": 26843,
+      "sha256": "5d106097dd78806bfd203e0e97eb1b6973d622eaa910f0be5747b9e4e08d9ba3"
+    },
+    {
+      "path": "app/static/js/catalog.js",
+      "size_bytes": 1717,
+      "sha256": "708e9207fbd40df3e6b2d6c993d05efb12a0dcb63fefd483a98802f272b1d75e"
+    },
+    {
+      "path": "app/static/js/index.js",
+      "size_bytes": 4042,
+      "sha256": "313eaee6f5d5f346abba6a3a3be783722aa60ccb9b8503f0f7ec0d84c56ff028"
+    },
+    {
+      "path": "app/static/js/shell.js",
+      "size_bytes": 7531,
+      "sha256": "73dc0be45c74f2efd196a483d2d5f6ef37ed35a8f80af6f7430045fb440e67a9"
+    },
+    {
+      "path": "app/templates/access_requests.html",
+      "size_bytes": 5526,
+      "sha256": "6e069a9e177666a1937c0e595fcaca2e9c9fc0d6b531687be81e60925ed9594e"
+    },
+    {
+      "path": "app/templates/approval_flows.html",
+      "size_bytes": 5694,
+      "sha256": "1de306b20a4bd6aba7ab5700f0dd94ed614c1e829918591077f4bd786bed4357"
+    },
+    {
+      "path": "app/templates/audit_logs.html",
+      "size_bytes": 1790,
+      "sha256": "4a53642d8284901d9835356b15fa46a9298cab3a905d826cbb883772ffcf93ea"
+    },
+    {
+      "path": "app/templates/base.html",
+      "size_bytes": 12319,
+      "sha256": "2704559409ee6b1b0e7dbc2f47b6b8c902669782effa65a618e233497b78c3f0"
+    },
+    {
+      "path": "app/templates/documentation.html",
+      "size_bytes": 980,
+      "sha256": "8f391044a369c40685a8bfaa558e9be898057cd97938a1f312f5a51829915441"
+    },
+    {
+      "path": "app/templates/help.html",
+      "size_bytes": 1916,
+      "sha256": "f43612c823e9800b8eef69ff203efaf0edeee0d8eec44007d27723ce5135a4dd"
+    },
+    {
+      "path": "app/templates/index.html",
+      "size_bytes": 10244,
+      "sha256": "1cc11537ab892158c3a800921774089bde195a2ab46846536e5e9094d28a3231"
+    },
+    {
+      "path": "app/templates/integrations.html",
+      "size_bytes": 3877,
+      "sha256": "440101da20569400a582301380b6b632a14599f079c6c95986b83ade75b36e92"
+    },
+    {
+      "path": "app/templates/login.html",
+      "size_bytes": 2590,
+      "sha256": "6aa977b1b1a764f2fe98199a71c4540d7a3c827914983becce00ea33927763a1"
+    },
+    {
+      "path": "app/templates/notifications.html",
+      "size_bytes": 1322,
+      "sha256": "f1ab7cfc29aa0f6b0728f6fc527984dca39438714fb8714c250b0b220cd0456e"
+    },
+    {
+      "path": "app/templates/permissions.html",
+      "size_bytes": 2133,
+      "sha256": "4326918d9137106bc53b0fe3ee479dbf57c11c07aa1a4997fa3ef094b75a76ec"
+    },
+    {
+      "path": "app/templates/process.html",
+      "size_bytes": 14967,
+      "sha256": "66389a0f1c8847820b700d215c74161c2b6112d1824f15efb77f9312eeb14047"
+    },
+    {
+      "path": "app/templates/processes.html",
+      "size_bytes": 3698,
+      "sha256": "32403fc92c9b32e0b7acf28803b3a5022defd5c7b8d5d5f870a0e820bf6e31b9"
+    },
+    {
+      "path": "app/templates/profiles.html",
+      "size_bytes": 2215,
+      "sha256": "adb66c508bf2b4b3a183dd0a7435e8a0c82edf8cebb961731f1f232df8d4fca1"
+    },
+    {
+      "path": "app/templates/roles.html",
+      "size_bytes": 2037,
+      "sha256": "83517b484879e082b1410ae8115f9d1d0a4237cef9d1e689b9089eafd1e340f5"
+    },
+    {
+      "path": "app/templates/settings.html",
+      "size_bytes": 1161,
+      "sha256": "3df119adca19bee16c736b54f2fbccd383a02b72ea9cca1840473d59f2c81b7f"
+    },
+    {
+      "path": "app/templates/units.html",
+      "size_bytes": 2718,
+      "sha256": "7f627959560af67f66676c3a396910ba71bdc4756e2c3c43c7c6f8480db62d49"
+    },
+    {
+      "path": "app/templates/users.html",
+      "size_bytes": 3398,
+      "sha256": "186d84299ae2ec15df9f592086f7951d9f79865eb168eb77e996996e51da4673"
+    },
+    {
+      "path": "app/worker.py",
+      "size_bytes": 1222,
+      "sha256": "d43cf3bbcfc0db4c5ecfe0863658d9f14519d0c11f381cb2de84bc7163383d88"
+    },
+    {
+      "path": "compose.homolog.yaml",
+      "size_bytes": 419,
+      "sha256": "9dc58aa8820fcd505e078205c049c7c895181e5a731e773ade77a84cf8dd3f50"
+    },
+    {
+      "path": "compose.local.yaml",
+      "size_bytes": 796,
+      "sha256": "4c0dd65f58c9c94ebf660fae29e942fd54bfebbd58039d8872c43813f85400bb"
+    },
+    {
+      "path": "compose.production.yaml",
+      "size_bytes": 651,
+      "sha256": "aac119a994fbcc36bab6d36086183b690dc75677a9656e64d75533b11ce73c54"
+    },
+    {
+      "path": "compose.yaml",
+      "size_bytes": 1125,
+      "sha256": "28d4440b613714671c1119a07d8201b9c23a58821723ea202ac8ed4da2e83f03"
+    },
+    {
+      "path": "data/.gitkeep",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "deploy/k8s/base/configmap.yaml",
+      "size_bytes": 355,
+      "sha256": "8b83a0480920ea41c90ec1eb8e80ee153f6bfafe5561ae7b74be8cf70ad6e871"
+    },
+    {
+      "path": "deploy/k8s/base/ingress.yaml",
+      "size_bytes": 558,
+      "sha256": "9370afb7672c3f907cfdd12d910dc1b660c5c1103476d22fbd7fc135939d8f5b"
+    },
+    {
+      "path": "deploy/k8s/base/kustomization.yaml",
+      "size_bytes": 239,
+      "sha256": "e4f020b4e248036d8b8f020d79ed6ac1e8d45222ea468cea5482165481c55ddf"
+    },
+    {
+      "path": "deploy/k8s/base/migration-job.yaml",
+      "size_bytes": 464,
+      "sha256": "7c583d67a4e6690a6b43d7ab19535125172cb9906a0189191ea4c53feb4a292e"
+    },
+    {
+      "path": "deploy/k8s/base/network-policy.yaml",
+      "size_bytes": 339,
+      "sha256": "5946bd9a4d455741501b49bd4daa865eeddabfb21dabba9f4afa24afc91f3135"
+    },
+    {
+      "path": "deploy/k8s/base/pdb.yaml",
+      "size_bytes": 201,
+      "sha256": "dc41e94ca3609f20d82c383d5f249947adbff0e91b5499a96473d9c8be364bd2"
+    },
+    {
+      "path": "deploy/k8s/base/service.yaml",
+      "size_bytes": 186,
+      "sha256": "8fc0e5422cdc151ccb03eebcdf1874e1e882ce6ac7a9bbe734b36d315a1bcac5"
+    },
+    {
+      "path": "deploy/k8s/base/web-deployment.yaml",
+      "size_bytes": 1534,
+      "sha256": "8f89cbd2b886f83c15be08b3427ff6f982b5ad3b7be39138978b3d3b6b4013ce"
+    },
+    {
+      "path": "deploy/k8s/base/worker-deployment.yaml",
+      "size_bytes": 1156,
+      "sha256": "de9dcccee952206c50f36943a281f93b6035f56f4024f78f9e2343cf84c8e6b2"
+    },
+    {
+      "path": "deploy/k8s/overlays/homologation/kustomization.yaml",
+      "size_bytes": 442,
+      "sha256": "b51ad8429596f5065e43ed09d1e1233091e8e3f7b61302ec2ea9a4306f19d84b"
+    },
+    {
+      "path": "deploy/k8s/overlays/production/kustomization.yaml",
+      "size_bytes": 361,
+      "sha256": "bfc944cb565ba33b544e77ed3f0f68c8f8749791ba1df2f3aeca1a3bbe80a7c6"
+    },
+    {
+      "path": "deploy/nginx/default.conf",
+      "size_bytes": 601,
+      "sha256": "5154db7aafe01cfc711a10731902e2125987ae1200f6b48548ea6659dbd95506"
+    },
+    {
+      "path": "docker/entrypoint.sh",
+      "size_bytes": 410,
+      "sha256": "5c332b42b0d4fe3d8c82eaae723be725f15ae4ebc3d6f852c39917a488e43b8d"
+    },
+    {
+      "path": "docs/01_PROPOSTA_APLICACAO.md",
+      "size_bytes": 1778,
+      "sha256": "f4fbaeec9b5c1cc1c2cf53395a11ff884562281ed72c85f7cd1d4cc1a17f037c"
+    },
+    {
+      "path": "docs/02_REGRAS_NEGOCIO.md",
+      "size_bytes": 2177,
+      "sha256": "9f08a20539e20bbae3323dd5b7033445a5ca243323100726945d2893076fe427"
+    },
+    {
+      "path": "docs/03_ARQUITETURA.md",
+      "size_bytes": 2457,
+      "sha256": "9aedc70c29bb3a2efaa02337710437768591c251cceb0ef7bec6d6b91b2fdeee"
+    },
+    {
+      "path": "docs/04_INTEGRACAO_BIZAGI.md",
+      "size_bytes": 2074,
+      "sha256": "aa80c39596ebdf560345fa82b0342d48e4de3be1aee84fcffb87265e342cac35"
+    },
+    {
+      "path": "docs/05_GUIA_WINDOWS_VSCODE.md",
+      "size_bytes": 2681,
+      "sha256": "c149a3f7f3fb4d14a6e2bbf82a61f251e407421d7b38c7c430b23556182aa6dc"
+    },
+    {
+      "path": "docs/06_VALIDACAO_DA_ENTREGA.md",
+      "size_bytes": 1928,
+      "sha256": "3b1241222b30bd6990b95854386fd16530e81e1c7d3bbd94de6a667d677a06c9"
+    },
+    {
+      "path": "docs/07_N8N_AUTOMACAO.md",
+      "size_bytes": 2331,
+      "sha256": "893cc62b0ca197b7c687a81b48243eab979e7013367612e5a6c6d993c8fa81e6"
+    },
+    {
+      "path": "docs/08_FLUXO_APROVACAO.md",
+      "size_bytes": 1050,
+      "sha256": "f7dc529d4fa60d5a9eef76e4a66413f336e6d7dc4d2a2f84164bcc35e2a3a079"
+    },
+    {
+      "path": "docs/09_MAPA_NAVEGACAO.md",
+      "size_bytes": 869,
+      "sha256": "3b088c9a5e9ccba1b1272fe6e77b5a12f132decd379fba762dcb78027936a44e"
+    },
+    {
+      "path": "docs/12_LAYOUT_ENTERPRISE_CONSOLE_V1_5.md",
+      "size_bytes": 1256,
+      "sha256": "e61cd0d7942d1479a53a9c681a519a67345cec02d46e2733c7b96d0265c932c9"
+    },
+    {
+      "path": "docs/13_CHANGELOG_V1_5.md",
+      "size_bytes": 841,
+      "sha256": "fe43ea998018fe29d7a6f178b30c6c3534f3ea76e78f649bee27de45d620e8fc"
+    },
+    {
+      "path": "docs/14_CHANGELOG_V1_6.md",
+      "size_bytes": 1148,
+      "sha256": "3ff0edc7c1dcbf14cf9fbb00f0b4c6e45a12b53d3047ab4d2f1d0a9035608cdf"
+    },
+    {
+      "path": "docs/2276-P06-Protocolos-Ocorrencias_R1_Com_Anexo_Proposto.docx",
+      "size_bytes": 938668,
+      "sha256": "68deee3c82d5ddcccf0d3c862027ad9722e57f95ab0b2c9d074b3a5535f37b12"
+    },
+    {
+      "path": "docs/Apresentacao_Executiva_Sistema_Perfis_Permissoes_CAEd_Bizagi.docx",
+      "size_bytes": 1197417,
+      "sha256": "4c4a929052474343efc21212ea73cd54c1a56260e89279d08778737d75731891"
+    },
+    {
+      "path": "docs/Bizagi.postman_collection.json",
+      "size_bytes": 1471,
+      "sha256": "9692fbbeeca57605305b213228c9e1e8d0a3b5171bd55d1f3a1223ffd32fc194"
+    },
+    {
+      "path": "docs/CHANGELOG_V2_0.md",
+      "size_bytes": 735,
+      "sha256": "3c84f7a30a92944f301a3b196b167d486ccd517a20679e1e4178454315b37fc2"
+    },
+    {
+      "path": "docs/DEPLOY_HOMOLOGACAO.md",
+      "size_bytes": 1834,
+      "sha256": "06935a7099f6bf8e7cdcfeccb71014e0f63e098ebfeb3d32c8410282ba07daca"
+    },
+    {
+      "path": "docs/DEPLOY_LOCAL.md",
+      "size_bytes": 1278,
+      "sha256": "aad7761056b321217ce7ac676ba823a7f70e1a7936880308ab4187d81c265d8e"
+    },
+    {
+      "path": "docs/DEPLOY_PRODUCAO.md",
+      "size_bytes": 2277,
+      "sha256": "45b19cf8217e12f83e534456d33fc650aee03b074e9da62e2e50faf50598dd99"
+    },
+    {
+      "path": "docs/Documentacao_Completa_Sistema_Perfis_Permissoes_CAEd_Bizagi_v1.6.docx",
+      "size_bytes": 906124,
+      "sha256": "daf710d32ff94f802d9fc75cfcf63e0c0332a87dbc6179c48135f4a8a0decb24"
+    },
+    {
+      "path": "docs/Guia_Producao_Integracao_Bizagi_Sistema_Perfis_Permissoes_v1.6.docx",
+      "size_bytes": 363121,
+      "sha256": "9df61e6fab9b1efd4ac7eca345e8c565be27fdcb9bd397c9c1e4a41a189cca93"
+    },
+    {
+      "path": "docs/INDEX.md",
+      "size_bytes": 931,
+      "sha256": "d25e48f901bd1805020af2eabd466eac5c52abda14c85c3f6834849b6dc7a34d"
+    },
+    {
+      "path": "docs/INTEGRACAO_BIZAGI_PRODUCAO.md",
+      "size_bytes": 2070,
+      "sha256": "edb18c5c5e238f4af067383d09d3a33497822e87609a76cf8243ebc2f6aca793"
+    },
+    {
+      "path": "docs/MATRIZ_DE_PAPEIS_E_PERMISSOES.md",
+      "size_bytes": 753,
+      "sha256": "a6e6059f5e79a83c479051ec5daf439d6b71e76d037dac37497c89153a5d10e1"
+    },
+    {
+      "path": "docs/MODELOS_DE_SOLICITACAO.md",
+      "size_bytes": 2690,
+      "sha256": "84d55b61f8d187225de4a146c7bf4c689ba448b6a465d873ce6a59c029dfdd87"
+    },
+    {
+      "path": "docs/OPERACAO_N8N.md",
+      "size_bytes": 1215,
+      "sha256": "458b2d4b9a69b37b763a2335a330238c24ec350a2163cace17b6f1d1926eb773"
+    },
+    {
+      "path": "docs/REFERENCIAS_OFICIAIS.md",
+      "size_bytes": 810,
+      "sha256": "447b104d11a8c29dba7134229cb6b13964eaa203b1aea32f27d4615c2843d693"
+    },
+    {
+      "path": "docs/RUNBOOK_OPERACIONAL.md",
+      "size_bytes": 1405,
+      "sha256": "efed18d2dfe7edc3aa51836c5010e6b5563a928cb559636558394f979b21c538"
+    },
+    {
+      "path": "docs/SEGURANCA_E_LGPD.md",
+      "size_bytes": 1349,
+      "sha256": "c434d608ffe38b45ebac1db20adb5f69a1e7b636f3f5ce3c24590d797cf97570"
+    },
+    {
+      "path": "docs/SOLICITACOES_PARA_INFRAESTRUTURA.md",
+      "size_bytes": 2189,
+      "sha256": "afdf79607a31b55fe86aa9cbed6e2c3b2464c16156fea26c79f0250205755942"
+    },
+    {
+      "path": "docs/VALIDACAO_RELEASE_V2_0.md",
+      "size_bytes": 1568,
+      "sha256": "8d57d0ad8c85c92422ebbd8e4d88699656a754920a8c0c5d431185fccd68afb4"
+    },
+    {
+      "path": "docs/assets/arquitetura.png",
+      "size_bytes": 62913,
+      "sha256": "3d92a3a3d39e1bad8458d3b706347095b99d618e1b4e01c4496a8e922ab51db8"
+    },
+    {
+      "path": "docs/assets/console_processo_v1.5.png",
+      "size_bytes": 289786,
+      "sha256": "7c7bcc3b4d920f8f55570ebfeb4ee6d446ee14c1d6b9e7c5f66cddb5530e8202"
+    },
+    {
+      "path": "docs/assets/console_processo_v1.6.png",
+      "size_bytes": 288742,
+      "sha256": "ebddbb2856079bd0c97be23dcc1194b3d38067a5ed817331e294a6a74db45b25"
+    },
+    {
+      "path": "docs/assets/dashboard_v1.5.png",
+      "size_bytes": 176427,
+      "sha256": "8ffc97b55716b1458adb0b89435c9397ca2823bb708ec1291279cfb8ca09eee0"
+    },
+    {
+      "path": "docs/assets/fluxo.png",
+      "size_bytes": 43632,
+      "sha256": "abb47fb97076bfc331dbe9e1bb7b7b56bb3fa32b97f65b7c85dfb1188a6d2134"
+    },
+    {
+      "path": "docs/assets/fluxo_aprovacao_v1.6.png",
+      "size_bytes": 143712,
+      "sha256": "0fdc82a8c0983a2c3b998e58ce1809a6a3232b4dafc8c678a8f9b0a8cf4ad562"
+    },
+    {
+      "path": "docs/assets/integracoes_v1.6.png",
+      "size_bytes": 134575,
+      "sha256": "94919c3bbd1ac4b0d8491ab0921b99c69a68db85c0ad347b923bdcd2a61da6d3"
+    },
+    {
+      "path": "docs/assets/mobile_v1.5.png",
+      "size_bytes": 230100,
+      "sha256": "7e8eca535fb50fba2152ab453e3c5439214bb14fc1f8b1d172586cbe2ca180a6"
+    },
+    {
+      "path": "docs/assets/notificacoes_v1.6.png",
+      "size_bytes": 93011,
+      "sha256": "fcbed73b336f14c9557a47c43b66a40467136cc58465ec4951f2e7a29efe40f6"
+    },
+    {
+      "path": "docs/bizagi_mapping.example.json",
+      "size_bytes": 698,
+      "sha256": "fc24ce04a461ee2dab1b2d3ae5cb7704c5dcd2d544311600a6ce6b387b46ab32"
+    },
+    {
+      "path": "docs/n8n_approval_workflow.example.json",
+      "size_bytes": 2667,
+      "sha256": "132af9a2a86ebe200bb16f70506d7066e07e00e065b069b8ea05e62d0b7daaa0"
+    },
+    {
+      "path": "docs/openapi.json",
+      "size_bytes": 52359,
+      "sha256": "65a3b6a762d39e4b194cd08f25271b0ac3e315a136a3f499d709dc5bbf8e8c7f"
+    },
+    {
+      "path": "pyproject.toml",
+      "size_bytes": 612,
+      "sha256": "956368f07613cb4257a547f1d5d27795a60a49398bc3c6941508098cd9750d99"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "size_bytes": 141,
+      "sha256": "92c177d7aadd8a2859305b1eb81afbdf8c8ab79418f34292b4262ed8c253850b"
+    },
+    {
+      "path": "requirements.lock",
+      "size_bytes": 386,
+      "sha256": "24a73f531e3f6edd056f46f9f7e386d7736f8b5fd6e97987e6bddf64dafb9c69"
+    },
+    {
+      "path": "requirements.txt",
+      "size_bytes": 387,
+      "sha256": "7cc5519e7d6d591e50e671174e3dbb686123eae89cf42a8af029710c568c0dc0"
+    },
+    {
+      "path": "scripts/check_release.py",
+      "size_bytes": 1491,
+      "sha256": "00390e4136c47490ccd93081a94cc6de07314feaf4647ddc25506146a2c9db2c"
+    },
+    {
+      "path": "scripts/init_db.py",
+      "size_bytes": 267,
+      "sha256": "392c13296b0a6e39a4bb5c90c65a423bad43d86ee4d3463934ab818018f9250d"
+    },
+    {
+      "path": "scripts/run_linux.sh",
+      "size_bytes": 233,
+      "sha256": "49bb28660b68c9e8b03120f5e22043856650dcfa0de8cda09ecfeda49357f33c"
+    },
+    {
+      "path": "scripts/run_windows.bat",
+      "size_bytes": 345,
+      "sha256": "f4b8cf209e8c8c3594b64920c829538d5a30b490e306f38c6b7833d283f527b9"
+    },
+    {
+      "path": "scripts/setup_linux.sh",
+      "size_bytes": 346,
+      "sha256": "ce5386e9ba17e74ebd3a4f3923ca8d59c73fe6c4ccb58423027fb201e4bfae67"
+    },
+    {
+      "path": "scripts/setup_windows.ps1",
+      "size_bytes": 1077,
+      "sha256": "0794d76e341b40e8eca6f42ac60db039ef4c954bbe04e39c0cb24fe172bd7bbe"
+    },
+    {
+      "path": "tests/__init__.py",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tests/conftest.py",
+      "size_bytes": 773,
+      "sha256": "aee18a022ed75d00b79da50cf488d7d77c49dd9c7a473ecb2804847241dbdeac"
+    },
+    {
+      "path": "tests/helpers.py",
+      "size_bytes": 261,
+      "sha256": "12cff559449286bd5cb1fb7c6519ce0bdb068471272e0d8e6072302ee100ffe6"
+    },
+    {
+      "path": "tests/test_api_flow.py",
+      "size_bytes": 4677,
+      "sha256": "361f5485b4eda783524ac5eb02d2ab6a1f4c2795072a5537cdf065e9d239f73b"
+    },
+    {
+      "path": "tests/test_authorization.py",
+      "size_bytes": 1374,
+      "sha256": "4a2699c854a94cf350b708eb0ba90916889c64696b6a5dbed6604a6d01a54120"
+    },
+    {
+      "path": "tests/test_navigation.py",
+      "size_bytes": 901,
+      "sha256": "59f7f82d9b2514f2c4c6fb1d7d93fbaa6c083474c14cd28d3a006dcc168a0240"
+    },
+    {
+      "path": "tests/test_rules.py",
+      "size_bytes": 600,
+      "sha256": "14dbcf49e10e851b5bc963d13625d6565f0b2307c63ef90e2daec0b9f2425622"
+    },
+    {
+      "path": "tests/test_security_and_access.py",
+      "size_bytes": 2708,
+      "sha256": "47e0c2c60c90ac8c49f724d80fa783365d2ed7f77a085b424755fd8903a4bde5"
+    }
+  ]
+}

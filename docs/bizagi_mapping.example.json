@@ -1,0 +1,17 @@
+{
+  "process": {
+    "guid": "PREENCHER_COM_GUID_DO_PROCESSO",
+    "start_endpoint": "/odata/data/processes({process_guid})/start"
+  },
+  "xpaths": {
+    "process_code": "PerfisPermissoes.CodigoProcesso",
+    "process_name": "PerfisPermissoes.NomeProcesso",
+    "approval_status": "PerfisPermissoes.StatusAprovacao",
+    "payload_json": "PerfisPermissoes.PayloadJson"
+  },
+  "notes": [
+    "Validar todos os XPaths no formulário inicial do processo Bizagi.",
+    "O modo inicial envia a matriz completa como JSON para evitar perda de informação.",
+    "Após a definição da entidade de coleção no Bizagi, o adaptador pode ser estendido para gravar cada perfil como item da coleção."
+  ]
+}

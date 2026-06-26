@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Permissões · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">MODELO DE ACESSO</span><h1>Permissões</h1><p>Entenda o significado das ações disponíveis e sua utilização nas matrizes.</p></div><a href="/profiles" class="button">Ver perfis</a></section>
+<section class="metric-strip metric-strip--four"><article class="metric-card metric-card--yellow"><span>PROCESSOS</span><strong>{{ process_total }}</strong><small>Com matriz configurável</small></article><article class="metric-card"><span>PERFIS</span><strong>{{ profile_total }}</strong><small>Em todas as matrizes</small></article><article class="metric-card metric-card--amber"><span>TIPOS DE PERMISSÃO</span><strong>{{ permission_labels|length }}</strong><small>Ações padronizadas</small></article><article class="metric-card metric-card--blue"><span>CONCESSÕES</span><strong>{{ permission_counts.values()|sum }}</strong><small>Permissões efetivamente marcadas</small></article></section>
+<section class="permission-catalog">
+{% set descriptions = {'VIEW':'Consultar registros e informações sem alterar dados.','REGISTER':'Criar registros ou iniciar uma operação do processo.','EDIT':'Modificar registros existentes enquanto o fluxo permitir.','DELETE':'Remover registros, sujeito a confirmação e auditoria.','MONITOR':'Acompanhar ocorrências, indicadores e situação operacional.','APPROVE':'Tomar decisões nas etapas de revisão e aprovação.','ADMINISTER':'Administrar todas as ações, perfis e parâmetros do contexto.'} %}
+{% for code, label in permission_labels.items() %}<article class="panel permission-definition"><header><span class="permission-code">{{ code }}</span><strong>{{ label }}</strong><em>{{ permission_counts.get(code, 0) }} concessões</em></header><p>{{ descriptions[code] }}</p><footer>{% if code != 'VIEW' %}<span>Inclui automaticamente a permissão Visualizar quando necessário.</span>{% else %}<span>Permissão-base das demais ações operacionais.</span>{% endif %}</footer></article>{% endfor %}
+</section>
+{% endblock %}

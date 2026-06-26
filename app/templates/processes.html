@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Processos · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><span class="eyebrow">REGISTRO OPERACIONAL</span><h1>Processos</h1><p>Consulte e acompanhe todos os processos cadastrados e seus estados de governança.</p></div>
+  <a href="/#new" class="button button--primary"><svg><use href="#i-plus"/></svg>Novo processo</a>
+</section>
+<section class="metric-strip metric-strip--four">
+  <article class="metric-card metric-card--yellow"><span>TOTAL</span><strong>{{ processes|length }}</strong><small>Processos cadastrados</small></article>
+  <article class="metric-card"><span>RASCUNHOS</span><strong>{{ counts.get('draft', 0) }}</strong><small>Disponíveis para edição</small></article>
+  <article class="metric-card metric-card--amber"><span>EM APROVAÇÃO</span><strong>{{ counts.get('pending_approval', 0) }}</strong><small>Na fila dos aprovadores</small></article>
+  <article class="metric-card metric-card--blue"><span>CONCLUÍDOS</span><strong>{{ counts.get('approved', 0) + counts.get('synced', 0) }}</strong><small>Aprovados ou sincronizados</small></article>
+</section>
+<section class="panel admin-panel">
+  <header class="panel-header admin-panel-header">
+    <div><h2>Catálogo de processos</h2><p>Abra um registro para alterar identificação, perfis, permissões e fluxo.</p></div>
+    <div class="table-controls">
+      <label class="control-with-helper search-control"><span class="control-input"><svg><use href="#i-search"/></svg><input id="processSearch" type="search" placeholder="Buscar processo"></span><small>Código, nome, área ou responsável.</small></label>
+      <label class="control-with-helper"><span class="control-input control-input--select"><svg><use href="#i-filter"/></svg><select id="statusFilter"><option value="all">Todos os status</option><option value="draft">Rascunho</option><option value="pending_approval">Pendente de aprovação</option><option value="approved">Aprovado</option><option value="synced">Sincronizado</option></select></span><small>Refine pelo estado atual.</small></label>
+    </div>
+  </header>
+  <div class="table-scroll"><table class="process-table"><thead><tr><th>Código</th><th>Processo</th><th>Área</th><th>Responsável</th><th>Status</th><th>Atualização</th><th></th></tr></thead><tbody>
+  {% for process in processes %}
+  <tr class="process-registry-row" data-status="{{ process.status }}" data-search="{{ (process.code ~ ' ' ~ process.name ~ ' ' ~ process.area ~ ' ' ~ process.responsible)|lower }}">
+    <td><code>{{ process.code }}</code></td><td><a class="process-name-link" href="/processes/{{ process.id }}">{{ process.name }}</a><small>{{ process.description or 'Sem descrição.' }}</small></td><td>{{ process.area or 'Não informada' }}</td><td>{{ process.responsible or 'Não informado' }}</td><td><span class="status-label status-label--{{ process.status }}"><i></i>{% if process.status == 'draft' %}Rascunho{% elif process.status == 'pending_approval' %}Pendente de aprovação{% elif process.status == 'approved' %}Aprovado{% elif process.status == 'synced' %}Sincronizado{% else %}{{ process.status }}{% endif %}</span></td><td>{{ process.updated_at.strftime('%d/%m/%Y %H:%M') }}</td><td><a class="table-icon-button" href="/processes/{{ process.id }}" title="Abrir"><svg><use href="#i-eye"/></svg></a></td>
+  </tr>{% endfor %}</tbody></table></div>
+  <div id="processNoResults" class="empty-state" hidden><strong>Nenhum processo localizado.</strong><span>Revise os filtros aplicados.</span></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='/js/catalog.js') }}"></script>{% endblock %}
