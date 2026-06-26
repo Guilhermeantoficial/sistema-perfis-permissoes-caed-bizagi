@@ -1,5 +1,5 @@
 pytest>=9.0,<10.0
-pytest-cov>=7.0,<8.0
+pytest-cov>=7.1.0,<8.0
 ruff>=0.14,<1.0
 mypy>=1.19,<2.0
 pip-audit>=2.10,<3.0
